@@ -1,0 +1,62 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    container_name: chat_db
+    env_file: .env
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+  web:
+    build: .
+    image: chat_web
+    env_file: .env
+    volumes:
+      - .:/opt/chat
+    working_dir: /opt/chat
+    ports:
+      - "8000:8000"
+    container_name: chat_web
+    depends_on:
+      - db
+    command: /bin/bash -c ./scripts/run_django.sh
+  rabbit:
+    image: rabbitmq:latest
+    env_file: .env
+    container_name: chat_rabbit
+    ports:
+      - "5672:5672"
+  vue:
+    build: ./chat-frontend/
+    container_name: chat_vue
+    env_file: .env
+    ports:
+        - "8080:80"
+    depends_on:
+        - web
+  celeryworker:
+    depends_on:
+        - web
+    image: chat_web
+    volumes:
+        - .:/opt/chat
+    env_file: .env
+    working_dir: /opt/chat
+    container_name: chat-celeryworker
+    command: /bin/bash ./scripts/run_celeryworker.sh
+  uwsgi:
+    build: .
+    image: chat_web
+    env_file: .env
+    volumes:
+      - .:/opt/chat
+    working_dir: /opt/chat
+    ports:
+      - "8081:8081"
+    container_name: chat_uwsgi
+    depends_on:
+      - db
+    command: /bin/bash -c ./scripts/run_uwsgi.sh
+
+
+

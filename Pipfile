@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+djoser = "*"
+django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
+django = "~=3.0"
+djangorestframework = "~=3.10"
+django-notifs = "*"
+psycopg2-binary = ">=2.8"
+celery = "*"
+pika = "*"
+autopep8 = "*"
+
+[dev-packages]
+flake8 = "*"
+autopep8 = "*"
+
+[requires]
+python_version = "3.8"
