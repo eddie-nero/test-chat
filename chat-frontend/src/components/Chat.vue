@@ -21,7 +21,7 @@
                     <span
                       class="card-text speech-bubble speech-bubble-user float-right text-white subtle-blue-gradient"
                     >
-                      {{ message.message }}
+                      {{ message.user.username }} : {{ message.message }}
                     </span>
                   </div>
                   <div class="col-sm-2">
@@ -40,7 +40,7 @@
                   </div>
                   <div class="col-sm-7">
                     <span class="card-text speech-bubble speech-bubble-peer">
-                      {{ message.message }}
+                      {{ message.user.username }} : {{ message.message }}
                     </span>
                   </div>
                 </template>
@@ -93,7 +93,6 @@ const $ = window.jQuery;
 export default {
   data() {
     return {
-      loading: true,
       sessionStarted: false,
       messages: [],
       message: "",
@@ -101,14 +100,14 @@ export default {
   },
 
   created() {
-    this.username = sessionStorage.getItem("username");
+    this.username = localStorage.getItem("username");
 
     // Setup headers for all requests
     $.ajaxSetup({
       beforeSend: function (xhr) {
         xhr.setRequestHeader(
           "Authorization",
-          `JWT ${sessionStorage.getItem("authToken")}`
+          `JWT ${localStorage.getItem("authToken")}`
         );
       },
     });
@@ -156,7 +155,6 @@ export default {
           const user = data.members.find(
             (member) => member.username === this.username
           );
-
           if (user) {
             // The user belongs/has joined the session
             this.sessionStarted = true;
@@ -170,9 +168,6 @@ export default {
         `http://localhost:8000/api/v1/chats/${this.$route.params.uri}/messages/`,
         (data) => {
           this.messages = data.messages;
-          setTimeout(() => {
-            this.loading = false;
-          }, 2000);
         }
       );
     },

@@ -151,8 +151,8 @@ export default {
     signIn() {
       const credentials = { username: this.username, password: this.password };
       $.post("http://localhost:8000/auth/jwt/create/", credentials, (data) => {
-        sessionStorage.setItem("authToken", data["access"]);
-        sessionStorage.setItem("username", this.username);
+        localStorage.setItem("authToken", data["access"]);
+        localStorage.setItem("username", this.username);
         this.$router.push("/chats");
       }).fail((response) => {
         alert(response.responseText);
