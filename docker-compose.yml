@@ -19,7 +19,7 @@ services:
     container_name: chat_web
     depends_on:
       - db
-    command: /bin/bash -c ./scripts/run_django.sh
+    command: /bin/bash ./scripts/run_django.sh
   rabbit:
     image: rabbitmq:latest
     env_file: .env
