@@ -5,7 +5,7 @@ RETRIES=7
 while [ "$RETRIES" -gt 0 ]
 do
   echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
-  PG_STATUS="$(pg_isready -h $host -U postgres)"
+  PG_STATUS="$(pg_isready -h chat_db -p 5432)"
   PG_EXIT=$(echo $?)
   echo "Postgres Status: $PG_EXIT - $PG_STATUS"
   if [ "$PG_EXIT" = "0" ];
