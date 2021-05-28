@@ -158,7 +158,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080"
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
